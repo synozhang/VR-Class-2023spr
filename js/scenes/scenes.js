@@ -11,6 +11,7 @@ export default () => {
       scenes: [ 
          { name: "DemoExample" , path: "./demoExample.js" },
          { name: "DemoKP0"     , path: "./demoKP0.js"     },
+         { name: "Robot", path: "./botDemo.js"},
       ]
    };
 }
