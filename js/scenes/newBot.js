@@ -50,18 +50,23 @@ export const init = async model => {
 
    let neck = model.add('tubeY').color(c_arm);
 
-   let head = model.add('tubeY').color(c_body_main);
+   let head = model.add();
+   head.add('tubeY').color(c_body_main);
+   head.add('tubeZ').color(c_eyepit);
+   head.add('sphere').color();
 
-   let leye1 = model.add('tubeZ').color(c_eyepit);
-   let leye2 = model.add('sphere').color();
+//    let head = model.add('tubeY').color(c_body_main);
 
-   let reye1 = model.add('tubeZ').color(c_eyepit);
-   let reye2 = model.add('sphere').color();
+//    let leye1 = model.add('tubeZ').color(c_eyepit);
+//    let leye2 = model.add('sphere').color();
 
-   let mouth = model.add('cube').color(c_eyepit);
+//    let reye1 = model.add('tubeZ').color(c_eyepit);
+//    let reye2 = model.add('sphere').color();
 
-   let antenna1 = model.add('tubeY').color(c_body_bottom);
-   let antenna2 = model.add('donut').color(c_body_bottom);
+//    let mouth = model.add('cube').color(c_eyepit);
+
+//    let antenna1 = model.add('tubeY').color(c_body_bottom);
+//    let antenna2 = model.add('donut').color(c_body_bottom);
 
    let lshoulder = model.add('cube').color(c_body_bottom);
    let rshoulder = model.add('cube').color(c_body_bottom);
@@ -110,24 +115,27 @@ export const init = async model => {
       rfoot2.identity().move(1.0,-4.14,0).scale([0.2,0.075,0.15]);
 
       neck.identity().move(-0.1,0.9,0).scale([0.22,0.22,0.22]);
-      head.identity().move(-0.1,1.4,0).scale([0.5,0.43,0.4]);
+      // head.identity().move(-0.1,1.4,0).scale([0.5,0.43,0.4]);
 
-      leye1.identity().move(-0.35,1.5,0.25).scale([0.18,0.18,0.18]);
-      leye2.identity().move(-0.35,1.5,0.38).scale([0.13,0.13,0.13])
-            .color([188/255-182/255*Math.abs(Math.sin(2.5*model.time)),188/255-182/255*Math.abs(Math.sin(2.5*model.time)), 245/255]);
+      // leye1.identity().move(-0.35,1.5,0.25).scale([0.18,0.18,0.18]);
+      // leye2.identity().move(-0.35,1.5,0.38).scale([0.13,0.13,0.13])
+      //       .color([188/255-182/255*Math.abs(Math.sin(2.5*model.time)),188/255-182/255*Math.abs(Math.sin(2.5*model.time)), 245/255]);
       
-      reye1.identity().move(0.15,1.5,0.25).scale([0.18,0.18,0.18]);
-      reye2.identity().move(0.15,1.5,0.38).scale([0.13,0.13,0.13])
-            .color([188/255-182/255*Math.abs(Math.sin(2.5*model.time)),188/255-182/255*Math.abs(Math.sin(2.5*model.time)), 245/255]);
+      // reye1.identity().move(0.15,1.5,0.25).scale([0.18,0.18,0.18]);
+      // reye2.identity().move(0.15,1.5,0.38).scale([0.13,0.13,0.13])
+      //       .color([188/255-182/255*Math.abs(Math.sin(2.5*model.time)),188/255-182/255*Math.abs(Math.sin(2.5*model.time)), 245/255]);
       
-      mouth.identity().move(-0.1,1.16,0.22).scale([0.17,0.10,0.2]);
+      // mouth.identity().move(-0.1,1.16,0.22).scale([0.17,0.10,0.2]);
 
-      antenna1.identity().move(-0.1, 1.95, 0).scale([0.07,0.15,0.07]);
-      antenna2.identity().move(-0.1,2.25,0).turnY(Math.sin(2*model.time)).scale([0.3,0.2,0.2]);
+      // antenna1.identity().move(-0.1, 1.95, 0).scale([0.07,0.15,0.07]);
+      // antenna2.identity().move(-0.1,2.25,0).turnY(Math.sin(2*model.time)).scale([0.3,0.2,0.2]);
 
       lshoulder.identity().move(-0.75,0.56,0).scale([0.2,0.1,0.2]);
       rshoulder.identity().move(0.55,0.56,0).scale([0.2,0.1,0.2]);
 
-   }).turnY(0.3);
-}
+      head.child(0).identity().move(-0.1,1.4,0).turnY(model.time).scale([0.5,0.43,0.4]);
+      head.child(1).identity().move(-0.35,1.5,0.25).scale([0.18,0.18,0.18]);
+      head.child(2).identity().move(-0.35,1.5,0.38).scale([0.13,0.13,0.13]);
 
+   }).turnY(0);
+}

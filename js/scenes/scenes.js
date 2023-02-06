@@ -12,6 +12,7 @@ export default () => {
          { name: "DemoExample" , path: "./demoExample.js" },
          { name: "DemoKP0"     , path: "./demoKP0.js"     },
          { name: "Robot", path: "./botDemo.js"},
+         { name: "RobotHierarchy", path: "./newBot.js"},
       ]
    };
 }
