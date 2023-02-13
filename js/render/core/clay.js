@@ -3713,6 +3713,23 @@ function Node(_form) {
          M = cg.mMultiply(node.getMatrix(), M);
       return M;
    }
+   this.globalToLocal= M => {
+      let node = this;
+      let m;
+      if (node._parent) {
+         node = node._parent;
+         m = cg.mInverse(node.getMatrix());
+         while (node._parent) {
+            node = node._parent;
+            m = cg.mMultiply(m, cg.mInverse(node.getMatrix()));
+         }
+         m = cg.mMultiply(m, M);
+      } else {
+         m = M;
+      }
+
+      return m;
+   }
    this.flag = (name, value)  => {
       if (value === undefined) value = 1;
       if (value) {
