@@ -19,7 +19,7 @@ export default () => {
          { name: "DemoTrianglesMesh" , path: "./demoTrianglesMesh.js" },
          { name: "DemoOpacity"       , path: "./demoOpacity.js"       },
          { name: "Robot", path: "./botDemo.js"},
-         { name: "RobotHierarchy", path: "./newBot.js"},
+         { name: "RobotHierarchy", path: "./bot_beam.js"},
       ]
    };
 }
