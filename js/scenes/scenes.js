@@ -9,9 +9,7 @@ export default () => {
    return {
       enableSceneReloading: true,
       scenes: [ 
-         { name: "DemoExample"       , path: "./demoExample.js"       },
          { name: "DemoKP0"           , path: "./demoKP0.js"           },
-         { name: "DemoKP1"           , path: "./demoKP1.js"           },
          { name: "DemoKP2"           , path: "./demoKP2.js"           },
          { name: "DemoKP3"           , path: "./demoKP3.js"           },
          { name: "DemoCanvas"        , path: "./demoCanvas.js"        },
@@ -22,8 +20,7 @@ export default () => {
          { name: "DemoHands"         , path: "./demoHands.js"         },
          { name: "DemoShader"        , path: "./demoShader.js"        },
          { name: "DemoTerrain"       , path: "./demoTerrain.js"       },
-         { name: "Robot", path: "./botDemo.js"},
-         { name: "RobotHierarchy", path: "./bot_beam.js"},
+         { name: "scaryOne"          , path: "./scary_one.js"         },
       ]
    };
 }
