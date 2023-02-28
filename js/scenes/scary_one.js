@@ -15,6 +15,10 @@ let curr_beat = 60;
 
 let should_tremble = false;
 
+let x = 0.8;
+
+let dead_flag = false;
+
 
 // vm: View Matrix
 // let projectOntoViewBeam = (P, vm) => {
@@ -66,6 +70,114 @@ let Z = 0;
 
 export const init = async model => {
 
+
+    let Line = t => {
+        let r = 0;
+
+        if (dead_flag) {
+            return r;
+        }
+
+        if (curr_beat <= 90) {
+            let base =0;
+            if ((t > 0.15 && t < 0.35) || (t > 0.65 && t < 0.85)) {
+                if (t > 0.65) {
+                base = 0.65;
+                } else {
+                base = 0.15;
+                }
+    
+                let d = t - base;
+                switch(true) {
+                case (d <= 0.05):
+                    r = d*6;
+                    break;
+                case (d <= 0.1):
+                    r = 0.3 - (d-0.05)*6;
+                    break;
+                case (d <= 0.15):
+                    r = (d - 0.1)*2;
+                    break;
+                case (d <= 0.2):
+                    r = 0.1 - (d - 0.15)*2;
+                    break;
+                }
+            }
+
+            x = 0.8;
+        }
+
+        if (curr_beat > 90 && curr_beat <= 130) {
+            let base = 0;
+            let hi = 0.4/6;
+            if ((t>hi && t<hi+0.2) || (t>0.2+3*hi && t<0.4+3*hi) || (t>0.4+5*hi && t<1-hi)) {
+                if (t > 0.4 + 5 * hi) {
+                    base = 0.4 + 5 * hi;
+                } else if (t > 0.2+3*hi) {
+                    base = 0.2 + 3 * hi;
+                } else {
+                    base = hi;
+                }
+
+                let d = t - base;
+                switch(true) {
+                    case (d <= 0.05):
+                        r = d*6;
+                        break;
+                    case (d <= 0.1):
+                        r = 0.3 - (d-0.05)*6;
+                        break;
+                    case (d <= 0.15):
+                        r = (d - 0.1)*2;
+                        break;
+                    case (d <= 0.2):
+                        r = 0.1 - (d - 0.15)*2;
+                        break;
+                }
+            }
+
+            x = 0.8;
+
+        }
+
+        if (curr_beat > 130) {
+            let b = Math.floor(t/0.2);
+            let d = t - b*0.2;
+            switch(true) {
+                case (d <= 0.05):
+                    r = d*6;
+                    break;
+                case (d <= 0.1):
+                    r = 0.3 - (d-0.05)*6;
+                    break;
+                case (d <= 0.15):
+                    r = (d - 0.1)*2;
+                    break;
+                case (d <= 0.2):
+                    r = 0.1 - (d - 0.15)*2;
+                    break;
+            }
+
+            x = 0.8;
+            if (curr_beat > 145) {
+                x = 1.0;
+            }
+            if (curr_beat > 160) {
+                x = 1.25;
+            }
+            if (curr_beat > 175) {
+                x = 1.5;
+            }
+
+        }
+
+
+        return r;
+    }
+
+    let f = t => [t, Line(t+ x * model.time - Math.floor(t+ x * model.time)), 0]
+    let wire = model.add(clay.wire(250,10)).color(5,0.25,0.25);
+
     model.setTable(false);
 
     let head = model.add()
@@ -101,6 +213,9 @@ export const init = async model => {
 
         g2.textHeight(h);
         let mBeat = curr_beat + 3 * Math.sin(0.3 * model.time);
+        if (dead_flag) {
+            mBeat = 0;
+        }
         g2.fillText('' + mBeat.toFixed(0) + ' BPM', .5, .5, 'center');
     })
 
@@ -108,10 +223,13 @@ export const init = async model => {
 
     model.animate(() => {
 
+        wire.identity().hud_r().scale(.5);
+        clay.animateWire(wire, .015, f);
+
         // heart_hud.identity().move(1,1.5,0).scale(0.2);
         heart_hud.hud_r().scale(0.2);
-        heart_icon.identity().scale(0.4, 0.3, 0.0001);
-        heart_display.identity().move(1.3, 0, 0).scale(1, 1, 0.0001);
+        heart_icon.identity().move(-0.6, 0, 0).scale(0.55, 0.45, 0.0001);
+        heart_display.identity().move(0.7, -0.3, 0).scale(1, 1, 0.0001);
 
         head.identity().move(0,1.5,-0.3).scale(.15);
         test_hud.hud_l().scale(0.8,0.8,.0001);
@@ -133,24 +251,31 @@ export const init = async model => {
         Y = vm[13];
         Z = vm[14];
 
-        dist_p = getDist(vm.slice(12,15), head.getGlobalMatrix().slice(12,15));
+        if (!dead_flag) {
 
-        if (newSightOn(head, 0.45, vm)) {
-            should_tremble = true;
-            testText = 'true';
-            curr_beat = curr_beat >= max_beat ? curr_beat - 0.12 : curr_beat + 2;
-        } else {
-            should_tremble = false;
-            testText = 'False';
-            curr_beat = curr_beat <= min_beat ? min_beat : curr_beat - 0.15;
+            dist_p = getDist(vm.slice(12,15), head.getGlobalMatrix().slice(12,15));
+
+            if (newSightOn(head, 0.45, vm)) {
+                should_tremble = true;
+                testText = 'true';
+                curr_beat = curr_beat >= max_beat ? curr_beat - 0.12 : curr_beat + 2;
+                if (max_beat - curr_beat >= 110) {
+                    dead_flag = true;
+                    curr_beat = 0;
+                }
+            } else {
+                should_tremble = false;
+                testText = 'False';
+                curr_beat = curr_beat <= min_beat ? min_beat : curr_beat - 0.15;
+            }
+
+            let diff_beat = 0;
+            if (dist_p <= 1.4) {
+                diff_beat = dist_p < 0.40 ? 80 : ((1.4 - dist_p) / (1.4 - 0.40)) * 80;
+            }
+
+            max_beat = base_max_beat + diff_beat;
         }
-
-        let diff_beat = 0;
-        if (dist_p <= 1.4) {
-            diff_beat = dist_p < 0.40 ? 80 : ((1.4 - dist_p) / (1.4 - 0.40)) * 80;
-        }
-
-        max_beat = base_max_beat + diff_beat;
 
      }).turnY(0);
 }
