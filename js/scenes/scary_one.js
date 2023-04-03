@@ -160,13 +160,13 @@ export const init = async model => {
 
             x = 0.8;
             if (curr_beat > 145) {
-                x = 1.0;
+                x = 0.9;
             }
             if (curr_beat > 160) {
-                x = 1.25;
+                x = 1.0;
             }
             if (curr_beat > 175) {
-                x = 1.5;
+                x = 1.1;
             }
 
         }
@@ -228,8 +228,8 @@ export const init = async model => {
 
         // heart_hud.identity().move(1,1.5,0).scale(0.2);
         heart_hud.hud_r().scale(0.2);
-        heart_icon.identity().move(-0.6, 0, 0).scale(0.55, 0.45, 0.0001);
-        heart_display.identity().move(0.7, -0.3, 0).scale(1, 1, 0.0001);
+        heart_icon.identity().move(-0.75, 0, 0).scale(0.7, 0.6, 0.0001);
+        heart_display.identity().move(0.95, -0.3, 0).scale(1, 1, 0.0001);
 
         head.identity().move(0,1.5,-0.3).scale(.15);
         test_hud.hud_l().scale(0.8,0.8,.0001);
